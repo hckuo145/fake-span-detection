@@ -1,0 +1,16 @@
+frontend:
+    name: 'MelSpectrogram'
+    args:
+        n_fft     : 512
+        n_mels    : 80
+        hop_length: 128
+        
+backbone:
+    name: 'SENet'
+    args:
+        layers  : [3, 4, 6, 3]
+        channels: [16, 16, 32, 64, 128]
+    
+pooling   : 'Attentive_Statistics_Pooling'
+attn_heads: 8
+duration  : 4.
