@@ -10,7 +10,7 @@ python >= 3.8
 
 
 ## Dataset
-The noise and impulse response dataset cab be download from open resources:
+The noise and impulse response dataset can be download from open resources:
 * MUSAN dataset: https://www.openslr.org/17/
 * the simulated RIR dataset: https://www.openslr.org/26/
 
@@ -20,7 +20,7 @@ This recipe provides a tiny dataset that is part of the Training, Development ,a
 ## Citation
 If you find the code useful in your research, please cite:
 
-'''
+```
 @inproceedings{wu2022partially,
   title={Partially Fake Audio Detection by Self-Attention-Based Fake Span Discovery},
   author={Wu, Haibin and Kuo, Heng-Cheng and Zheng, Naijun and Hung, Kuo-Hsuan and Lee, Hung-Yi and Tsao, Yu and Wang, Hsin-Min and Meng, Helen},
@@ -29,4 +29,4 @@ If you find the code useful in your research, please cite:
   year={2022},
   organization={IEEE}
 }
-'''
+```
