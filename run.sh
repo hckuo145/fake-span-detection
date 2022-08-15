@@ -1,5 +1,4 @@
-# title=SENet_MSTFT_ASP
-title=Untitled
+title=SENet_MSTFT_ASP
 
 cmd="--title $title --device cuda --batch 10        \
      --model_conf config/model/SENet_MSTFT_ASP.yaml \
