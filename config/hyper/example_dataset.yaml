@@ -2,27 +2,27 @@ exp_dir: './exp'
 log_dir: './log'
 
 train_dataset_args:
-    data_dir  : 'data/track2adp'
-    data_list : 'data/label/track2adp_list.txt'
+    data_dir  : 'example/track2adp'
+    data_list : 'example/label/track2adp_list.txt'
     duration  : 4.
     mix       : True
     mix_ratio : [0.01, 0.3]
     hop_length: 128
     augment   : False
     # augment   : True
-    # noise_dir : 'data/musan'
-    # rir_dir   : 'data/simulated_rir_16k'
+    # noise_dir : 'example/musan'
+    # rir_dir   : 'example/simulated_rir_16k'
 
 valid_dataset_args:
-    data_dir : 'data/track2adp'
-    data_list: 'data/label/track2adp_list.txt'
+    data_dir : 'example/track2adp'
+    data_list: 'example/label/track2adp_list.txt'
 
 test_dataset_args:
-    data_dir : 'data/track2adp'
-    data_list: 'data/label/track2adp_list.txt'
+    data_dir : 'example/track2adp'
+    data_list: 'example/label/track2adp_list.txt'
 
 eval_dataset_args:
-    data_dir : 'data/track2test'
+    data_dir : 'example/track2test'
 
 optim: {'name': 'Adam', 'args': {'lr': 0.001, 'weight_decay': 0.0001}}
 
