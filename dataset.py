@@ -195,7 +195,7 @@ if __name__ == '__main__':
         mix_ratio=[0.01, 0.3],
         hop_length=128,
         augment=True,
-        noise_dir='/mnt/Dataset//musan',
+        noise_dir='/mnt/Dataset/musan',
         rir_dir='/mnt/Dataset/simulated_rirs_16k'
     )
     loader = DataLoader(dataset, batch_size=256, shuffle=True, num_workers=4, pin_memory=True, drop_last=True)
