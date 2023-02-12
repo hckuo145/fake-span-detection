@@ -1,3 +1,5 @@
+import s3prl.hub as hub
+
 import torch
 import torch.nn as nn
 import torchaudio
@@ -115,3 +117,78 @@ class MFCC(nn.Module):
                 x = self.torchfb(x) + 1e-6
         
         return x
+
+
+class Wav2Vec(nn.Module):
+    def __init__(self):
+        super(Wav2Vec, self).__init__()
+        
+        # wav2vec_large
+        self.extractor = hub.wav2vec()
+
+    @torch.no_grad()
+    def forward(self, wavs):
+        return self.extractor(list(wavs))['c']
+
+
+class Wav2Vec2(nn.Module):
+    def __init__(self):
+        super(Wav2Vec2, self).__init__()
+        
+        # wav2vec_base_960
+        self.extractor = hub.wav2vec2()
+
+    @torch.no_grad()
+    def forward(self, wavs):
+        return self.extractor(list(wavs))['last_hidden_state'].permute(0, 2, 1).contiguous()
+
+
+class WavLM(nn.Module):
+    def __init__(self):
+        super(WavLM, self).__init__()
+        
+        # wavlm_base_plus
+        self.extractor = hub.wavlm()
+
+    @torch.no_grad()
+    def forward(self, wavs):
+        return self.extractor(list(wavs))
+
+
+class HuBERT(nn.Module):
+    def __init__(self):
+        super(HuBERT, self).__init__()
+        
+        # hubert_base
+        self.extractor = hub.hubert()
+    
+    @torch.no_grad()
+    def forward(self, wavs):
+        return self.extractor(list(wavs))
+
+
+
+if __name__ == '__main__':
+    wavs = torch.randn(2, 16000 * 4 - 10)
+
+    frontend = MelSpectrogram(
+        n_fft     = 512,
+        n_mels    = 80,
+        hop_length= 128
+    )
+    feats = frontend(wavs)
+    print(feats.size())
+
+    # frontend = Wav2Vec()
+    # feats = frontend(wavs)
+    # print(feats.size())
+
+    frontend = Wav2Vec2()
+    feats = frontend(wavs)
+    print(feats.size())
+
+    # frontend = WavLM()
+    # feats = frontend(wavs)
+
+    # frontend = HuBERT()
+    # feats = frontend(wavs)

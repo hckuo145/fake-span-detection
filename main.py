@@ -53,7 +53,7 @@ if args.train:
         'train': AddDataset(**args.train_dataset_args),
         'valid': AddDataset(**args.valid_dataset_args)
     }
-
+    
     loader = {
         'train': DataLoader(dataset['train'], batch_size=args.batch, num_workers=4, pin_memory=True, \
             shuffle=True, drop_last=True),

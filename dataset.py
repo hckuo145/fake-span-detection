@@ -1,5 +1,5 @@
 import os
-import g711
+# import g711
 import random
 import soundfile
 import numpy as np
@@ -42,7 +42,8 @@ class WaveMixer:
         offset = random.randint(0, len(ref_wave) - len(cat_wave))
         ref_wave[offset:offset+len(cat_wave)] = cat_wave
 
-        position = [offset // self.hop_length, (offset + len(cat_wave)) // self.hop_length]
+        position = [offset // self.hop_length, (offset + len(cat_wave) - 1) // self.hop_length]
+        position = list(map(lambda p: max(0,  p - 1), position))
 
         return ref_wave, position
 
@@ -60,8 +61,8 @@ class WaveAugmentor():
         self.rir_paths = []
         for r, _, fs in os.walk(rir_dir):
             self.rir_paths += [ os.path.join(r, f) for f in fs if f.endswith('.wav') ]
-
-        self.codec_types = ['alaw', 'ulaw']
+        
+        # self.codec_types = ['alaw', 'ulaw']
 
     def add_noise(self, clean_wave:ndarray) -> ndarray:
         noise_type = random.choice(self.noise_types)
@@ -86,15 +87,15 @@ class WaveAugmentor():
 
         return np.convolve(wave, rir, mode='full')[:len(wave)]
 
-    def add_codec(self, wave:ndarray) -> ndarray:
-        codec = random.choice(self.codec_types)
+    # def add_codec(self, wave:ndarray) -> ndarray:
+    #     codec = random.choice(self.codec_types)
 
-        if codec == 'alaw':
-            wave = g711.decode_alaw(g711.encode_alaw(wave))
-        elif codec == 'ulaw':
-            wave = g711.decode_ulaw(g711.encode_ulaw(wave))
+    #     if codec == 'alaw':
+    #         wave = g711.decode_alaw(g711.encode_alaw(wave))
+    #     elif codec == 'ulaw':
+    #         wave = g711.decode_ulaw(g711.encode_ulaw(wave))
 
-        return wave
+    #     return wave
 
 
 class AddDataset(Dataset):
@@ -142,13 +143,14 @@ class AddDataset(Dataset):
                 wave, posit = self.mixer.concate(wave, cat_path)
 
         if self.augment:
-            aug_type = random.choice(['none', 'noise', 'reverb', 'codec'])
+            # aug_type = random.choice(['none', 'noise', 'reverb', 'codec'])
+            aug_type = random.choice(['none', 'noise', 'reverb'])
             if aug_type == 'noise':
                 wave = self.augmentor.add_noise(wave)
             elif aug_type == 'reverb':
                 wave = self.augmentor.add_reverb(wave)
-            elif aug_type == 'codec':
-                wave = self.augmentor.add_codec(wave)
+            # elif aug_type == 'codec':
+            #     wave = self.augmentor.add_codec(wave)
         
         wave  = torch.tensor(wave , dtype=torch.float32)
         label = torch.tensor(label, dtype=torch.int64)
@@ -174,9 +176,9 @@ class EvalDataset(Dataset):
         self.duration = duration
 
     def __getitem__(self, idx) -> Tuple[Tensor, str]:
+        name = self.names[idx]
         path = self.paths[idx]
         wave = load_wave(path, self.duration)
-        name = self.names[idx]
 
         return torch.FloatTensor(wave), name
 

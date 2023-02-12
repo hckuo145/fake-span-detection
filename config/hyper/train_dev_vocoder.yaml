@@ -1,0 +1,37 @@
+exp_dir: './exp'
+log_dir: './log'
+
+train_dataset_args:
+    data_dir  : '/home/hckuo/Project/ADD/data/ADD/'
+    data_list : '/home/hckuo/Project/ADD/data/ADD/label/train_dev_vocoder_list.txt'
+    duration  : 4.
+    mix       : True
+    mix_ratio : [0.01, 0.3]
+    hop_length: 320
+    augment   : True
+    noise_dir : '/mnt/sdb/Dataset/musan'
+    rir_dir   : '/mnt/sdb/Dataset/simulated_rirs_16k'
+
+valid_dataset_args:
+    data_dir : '/home/hckuo/Project/ADD/data/ADD/'
+    data_list: '/home/hckuo/Project/ADD/data/ADD/label/track2adp_list.txt'
+
+test_dataset_args:
+    data_dir : '/home/hckuo/Project/ADD/data/ADD/'
+    data_list: '/home/hckuo/Project/ADD/data/ADD/label/track2adp_list.txt'
+
+eval_dataset_args:
+    data_dir : '/home/hckuo/Project/ADD/data/ADD/track2test'
+
+optim: {'name': 'Adam', 'args': {'lr': 0.001, 'weight_decay': 0.0001}}
+
+monitor:
+    valid/eer:
+        mode: 'min'
+    valid/cls_loss:
+        mode: 'min'
+save_best_only: True
+
+patience : 10
+min_epoch: 2000
+max_epoch: -1
